@@ -1,6 +1,7 @@
 package com.mki.helpdesk.services;
 
 import com.mki.helpdesk.domain.Tecnico;
+import com.mki.helpdesk.domain.dtos.TecnicoDTO;
 import com.mki.helpdesk.repositories.TecnicoRepository;
 import com.mki.helpdesk.services.exceptions.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,10 @@ public class TecnicoService {
 
     public List<Tecnico> findAll() {
         return tecnicoRepository.findAll();
+    }
+
+    public Tecnico create(TecnicoDTO objDTO) {
+        objDTO.setId(null);
+        return tecnicoRepository.save(new Tecnico(objDTO));
     }
 }
