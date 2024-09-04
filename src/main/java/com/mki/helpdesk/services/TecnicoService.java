@@ -2,6 +2,7 @@ package com.mki.helpdesk.services;
 
 import com.mki.helpdesk.domain.Tecnico;
 import com.mki.helpdesk.repositories.TecnicoRepository;
+import com.mki.helpdesk.services.exceptions.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,6 @@ public class TecnicoService {
 
     public Tecnico findById(Integer id) {
         Optional<Tecnico> obj = tecnicoRepository.findById(id);
-        return obj.orElse(null);
+        return obj.orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado Id: " + id));
     }
 }
