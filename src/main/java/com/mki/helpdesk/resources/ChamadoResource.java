@@ -5,6 +5,7 @@ import com.mki.helpdesk.domain.dtos.ChamadoDTO;
 import com.mki.helpdesk.services.ChamadoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,4 +40,11 @@ public class ChamadoResource {
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ChamadoDTO> update(@PathVariable Integer id, @Valid @RequestBody ChamadoDTO objDTO){
+        Chamado newObj = chamadoService.update(id, objDTO);
+        return ResponseEntity.ok().body(new ChamadoDTO(newObj));
+    }
+
 }
