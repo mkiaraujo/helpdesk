@@ -8,6 +8,7 @@ import com.mki.helpdesk.repositories.PessoaRepository;
 import com.mki.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.mki.helpdesk.services.exceptions.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class ClienteService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     public Cliente findById(Integer id) {
         Optional<Cliente> obj = clienteRepository.findById(id);
         return obj.orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado Id: " + id));
@@ -32,6 +36,7 @@ public class ClienteService {
 
     public Cliente create(ClienteDTO objDTO) {
         objDTO.setId(null);
+        objDTO.setSenha(encoder.encode(objDTO.getSenha()));
         validaPorCpfEEmail(objDTO);
         return clienteRepository.save(new Cliente(objDTO));
     }
